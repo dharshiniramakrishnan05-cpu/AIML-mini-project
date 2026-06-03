@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Algorithm Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+            <h1>AlgoVision</h1>
+        </div>
+        <div class="controls">
+            <!-- Left: Settings -->
+            <div class="control-section settings-section">
+                <div class="control-group">
+                    <label for="algorithm-select">Algorithm</label>
+                    <div class="select-wrapper">
+                        <select id="algorithm-select">
+                            <option value="bfs">BFS</option>
+                            <option value="dfs">DFS</option>
+                            <option value="astar">A* Search</option>
+                            <option value="greedy">Greedy</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="mode-select">Mode</label>
+                    <div class="select-wrapper">
+                        <select id="mode-select">
+                            <option value="wall">Wall</option>
+                            <option value="erase">Erase</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group speed-group">
+                    <label for="speed-slider">Speed: <span id="speed-value">50</span></label>
+                    <div class="slider-container">
+                        <input type="range" id="speed-slider" min="1" max="100" value="50">
+                    </div>
+                </div>
+            </div>
+
+            <div class="vertical-divider"></div>
+
+            <!-- Right: Actions -->
+            <div class="control-section actions-section">
+                <button id="visualize-btn" class="btn btn-primary pulse">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    <span>Visualize</span>
+                </button>
+
+                <div id="viz-controls" class="control-actions" style="display: none;">
+                    <button id="pause-btn" class="btn btn-secondary">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                        <span>Pause</span>
+                    </button>
+                    <button id="stop-btn" class="btn btn-secondary btn-danger">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+                        Stop
+                    </button>
+                </div>
+
+                <div class="action-group-secondary">
+                    <button id="maze-btn" class="btn btn-ghost" title="Generate Maze">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg>
+                        Maze
+                    </button>
+                    <button id="clear-path-btn" class="btn btn-ghost">Clear Path</button>
+                    <button id="clear-board-btn" class="btn btn-ghost">Reset</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="legend">
+            <div class="legend-item" title="The starting point of the search">
+                <div class="node node-start-legend"></div>
+                <span>Start Point</span>
+            </div>
+            <div class="legend-item" title="The goal destination">
+                <div class="node node-target-legend"></div>
+                <span>Destination</span>
+            </div>
+            <div class="legend-item">
+                <div class="node node-wall-legend"></div>
+                <span>Obstacle</span>
+            </div>
+            <div class="legend-item">
+                <div class="node node-unvisited-legend"></div>
+                <span>Unexplored</span>
+            </div>
+            <div class="legend-item">
+                <div class="node node-visited-legend"></div>
+                <span>Scanning...</span>
+            </div>
+            <div class="legend-item">
+                <div class="node node-shortest-path-legend"></div>
+                <span>Optimal Path</span>
+            </div>
+        </div>
+        <div class="stats-panel">
+            <div class="stat-item">
+                <span class="stat-label">Explored</span>
+                <span id="stat-nodes" class="stat-value">0</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-label">Path Length</span>
+                <span id="stat-path" class="stat-value">0</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-label">Time</span>
+                <span id="stat-time" class="stat-value">0ms</span>
+            </div>
+        </div>
+
+        <div class="grid-container">
+            <div id="grid"></div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
